@@ -1,4 +1,8 @@
-﻿using System;
+﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Interfaces.Repositories;
+using InoxServer.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
