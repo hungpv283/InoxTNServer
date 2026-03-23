@@ -15,11 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\InoxServer.Application\InoxServer.Application.csproj" />
     <ProjectReference Include="..\InoxServer.Infrastructure\InoxServer.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
