@@ -2,6 +2,7 @@
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using InoxServer.Infrastructure.Repositories;
+using InoxServer.Infrastructure.Services.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,8 @@ namespace InoxServer.Infrastructure.Extensions
             services.AddScoped<IWishlistRepository, WishlistRepository>();
             services.AddScoped<ICouponRepository, CouponRepository>();
             services.AddScoped<IBannerRepository, BannerRepository>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
 
             // =========================
             // Unit Of Work
