@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InoxServer.Domain\InoxServer.Domain.csproj" />
+    <ProjectReference Include="..\InoxServer.SharedKernel\InoxServer.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

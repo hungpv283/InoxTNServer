@@ -1,6 +1,4 @@
-﻿using InoxServer.Application.Features.Products.DTOs;
-using InoxServer.SharedKernel.Common;
-using MediatR;
+﻿using InoxServer.SharedKernel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InoxServer.Application.Features.Products.Queries.GetProducts
 {
-    public class GetProductsQuery : PaginationRequest, IRequest<PagedResult<ProductDto>>
+    public class ProductQueryRequest : PaginationRequest
     {
         public string? Keyword { get; set; }
         public int? CategoryId { get; set; }

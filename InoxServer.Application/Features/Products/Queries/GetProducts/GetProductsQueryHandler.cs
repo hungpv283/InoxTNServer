@@ -1,5 +1,6 @@
 ﻿using InoxServer.Application.Features.Products.DTOs;
 using InoxServer.Domain.Interfaces.Repositories;
+using InoxServer.SharedKernel.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace InoxServer.Application.Features.Products.Queries.GetProducts
 {
-    public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, List<ProductDto>>
+    public class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, PagedResult<ProductDto>>
     {
         private readonly IProductRepository _productRepository;
 
@@ -18,11 +19,22 @@ namespace InoxServer.Application.Features.Products.Queries.GetProducts
             _productRepository = productRepository;
         }
 
-        public async Task<List<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+        public async Task<PagedResult<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
-            var products = await _productRepository.GetAllAsync(cancellationToken);
+            var page = request.Page <= 0 ? 1 : request.Page;
+            var pageSize = request.PageSize <= 0 ? 10 : request.PageSize;
 
-            return products.Select(x => new ProductDto
+            var pagedProducts = await _productRepository.GetPagedAsync(
+                page,
+                pageSize,
+                request.Keyword,
+                request.CategoryId,
+                request.MinPrice,
+                request.MaxPrice,
+                request.IsActive,
+                cancellationToken);
+
+            var items = pagedProducts.Items.Select(x => new ProductDto
             {
                 Id = x.Id,
                 CategoryId = x.CategoryId,
@@ -37,6 +49,14 @@ namespace InoxServer.Application.Features.Products.Queries.GetProducts
                 IsActive = x.IsActive,
                 IsFeatured = x.IsFeatured
             }).ToList();
+
+            return new PagedResult<ProductDto>
+            {
+                Items = items,
+                Page = pagedProducts.Page,
+                PageSize = pagedProducts.PageSize,
+                TotalCount = pagedProducts.TotalCount
+            };
         }
     }
 }

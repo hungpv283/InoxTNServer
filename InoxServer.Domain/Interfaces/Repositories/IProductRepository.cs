@@ -1,4 +1,5 @@
 ﻿using InoxServer.Domain.Entities;
+using InoxServer.SharedKernel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +23,17 @@ namespace InoxServer.Domain.Interfaces.Repositories
         void Delete(Product product);
 
         Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<int> CountAsync(CancellationToken cancellationToken = default);
+
+        Task<PagedResult<Product>> GetPagedAsync(
+             int page,
+             int pageSize,
+             string? keyword,
+             int? categoryId,
+             decimal? minPrice,
+             decimal? maxPrice,
+             bool? isActive,
+             CancellationToken cancellationToken = default);
     }
 }
