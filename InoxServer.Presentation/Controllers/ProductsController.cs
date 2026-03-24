@@ -5,6 +5,7 @@ using InoxServer.Application.Features.Products.Commands.UpdateProduct;
 using InoxServer.Application.Features.Products.Queries.GetProductById;
 using InoxServer.Application.Features.Products.Queries.GetProducts;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InoxServer.Presentation.Controllers;
@@ -35,6 +36,7 @@ public class ProductsController : ControllerBase
         return result == null ? NotFound() : Ok(result);
     }
 
+    
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
     {
@@ -49,6 +51,7 @@ public class ProductsController : ControllerBase
         return result ? Ok() : NotFound();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {

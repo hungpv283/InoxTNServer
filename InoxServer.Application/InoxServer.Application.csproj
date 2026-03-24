@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Products\Queries\GetCategories\**" />
+    <Compile Remove="Features\Products\Queries\GetCategoryById\**" />
+    <EmbeddedResource Remove="Features\Products\Queries\GetCategories\**" />
+    <EmbeddedResource Remove="Features\Products\Queries\GetCategoryById\**" />
+    <None Remove="Features\Products\Queries\GetCategories\**" />
+    <None Remove="Features\Products\Queries\GetCategoryById\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.25" />
   </ItemGroup>
 
   <ItemGroup>
