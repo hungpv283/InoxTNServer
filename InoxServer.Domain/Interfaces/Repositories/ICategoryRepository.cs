@@ -1,4 +1,5 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
+using InoxServer.SharedKernel.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,5 +27,13 @@ namespace InoxServer.Domain.Interfaces.Repositories
         void Update(Category category);
 
         void Delete(Category category);
+
+        Task<PagedResult<Category>> GetPagedAsync(
+            int page,
+            int pageSize,
+            string? keyword,
+            int? parentId,
+            bool? isActive,
+            CancellationToken cancellationToken = default);
     }
 }
