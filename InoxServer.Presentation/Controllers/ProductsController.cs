@@ -1,4 +1,5 @@
-﻿using InoxServer.Application.Features.Products.Commands.CreateProduct;
+﻿using Asp.Versioning;
+using InoxServer.Application.Features.Products.Commands.CreateProduct;
 using InoxServer.Application.Features.Products.Commands.DeleteProduct;
 using InoxServer.Application.Features.Products.Commands.UpdateProduct;
 using InoxServer.Application.Features.Products.Queries.GetProductById;
@@ -9,7 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace InoxServer.Presentation.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/products")]
 public class ProductsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -20,12 +22,13 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAll([FromQuery] GetProductsQuery query)
     {
-        return Ok(await _mediator.Send(new GetProductsQuery()));
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id)
     {
         var result = await _mediator.Send(new GetProductByIdQuery(id));
@@ -33,20 +36,20 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateProductCommand command)
+    public async Task<IActionResult> Create([FromBody] CreateProductCommand command)
     {
         var id = await _mediator.Send(command);
         return Ok(new { Id = id });
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(UpdateProductCommand command)
+    public async Task<IActionResult> Update([FromBody] UpdateProductCommand command)
     {
         var result = await _mediator.Send(command);
         return result ? Ok() : NotFound();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _mediator.Send(new DeleteProductCommand(id));
