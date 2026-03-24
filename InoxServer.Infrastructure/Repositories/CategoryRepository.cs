@@ -1,6 +1,7 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
+using InoxServer.SharedKernel.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,55 @@ namespace InoxServer.Infrastructure.Repositories
         public void Delete(Category category)
         {
             _context.Categories.Remove(category);
+        }
+
+        public async Task<PagedResult<Category>> GetPagedAsync(
+            int page,
+            int pageSize,
+            string? keyword,
+            int? parentId,
+            bool? isActive,
+            CancellationToken cancellationToken = default)
+        {
+            var query = _context.Categories
+                .AsNoTracking()
+                .Include(x => x.Children)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(x =>
+                    x.Name.Contains(keyword) ||
+                    x.Slug.Contains(keyword) ||
+                    (x.Description != null && x.Description.Contains(keyword)));
+            }
+
+            if (parentId.HasValue)
+            {
+                query = query.Where(x => x.ParentId == parentId.Value);
+            }
+
+            if (isActive.HasValue)
+            {
+                query = query.Where(x => x.IsActive == isActive.Value);
+            }
+
+            var totalCount = await query.CountAsync(cancellationToken);
+
+            var items = await query
+                .OrderBy(x => x.SortOrder)
+                .ThenBy(x => x.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return new PagedResult<Category>
+            {
+                Items = items,
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount
+            };
         }
     }
 }

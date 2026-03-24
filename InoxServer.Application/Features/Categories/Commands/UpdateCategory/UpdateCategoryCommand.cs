@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MediatR;
 
-namespace InoxServer.Application.Features.Products.DTOs
+namespace InoxServer.Application.Features.Categories.Commands.UpdateCategory
 {
-    public class CategoryDto
+    public class UpdateCategoryCommand : IRequest<bool>
     {
         public int Id { get; set; }
         public int? ParentId { get; set; }
