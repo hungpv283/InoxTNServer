@@ -1,8 +1,9 @@
-﻿using InoxServer.Domain.Interfaces;
+using InoxServer.Domain.Interfaces.Services;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using InoxServer.Infrastructure.Repositories;
 using InoxServer.Infrastructure.Services.Auth;
+using InoxServer.Infrastructure.Services.EmailService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,6 +34,7 @@ namespace InoxServer.Infrastructure.Extensions
             services.AddScoped<IBannerRepository, BannerRepository>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             // =========================
             // Unit Of Work

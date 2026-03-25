@@ -1,12 +1,8 @@
-﻿using InoxServer.Application.Features.Auth.DTOs;
-using InoxServer.Domain.Interfaces;
+using InoxServer.Application.Features.Auth.DTOs;
+using InoxServer.Domain.Errors;
+using InoxServer.Domain.Interfaces.Services;
 using InoxServer.Domain.Interfaces.Repositories;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InoxServer.Application.Features.Auth.Commands.Login
 {
@@ -30,14 +26,17 @@ namespace InoxServer.Application.Features.Auth.Commands.Login
         {
             var user = await _userRepository.GetByEmailAsync(request.Email, cancellationToken);
             if (user == null)
-                throw new Exception("Invalid email or password.");
+                throw new DomainException(AuthErrors.InvalidCredentials);
 
             if (!user.IsActive)
-                throw new Exception("Account is inactive.");
+                throw new DomainException(AuthErrors.AccountInactive);
 
             var isValidPassword = _passwordHasher.VerifyPassword(request.Password, user.PasswordHash);
             if (!isValidPassword)
-                throw new Exception("Invalid email or password.");
+                throw new DomainException(AuthErrors.InvalidCredentials);
+
+            if (!user.EmailVerifiedAt.HasValue)
+                throw new DomainException(AuthErrors.EmailNotVerified);
 
             var token = _jwtTokenService.GenerateToken(user);
 
@@ -47,6 +46,7 @@ namespace InoxServer.Application.Features.Auth.Commands.Login
                 Name = user.Name,
                 Email = user.Email,
                 Role = user.Role.ToString(),
+                IsEmailVerified = user.EmailVerifiedAt.HasValue,
                 AccessToken = token
             };
         }

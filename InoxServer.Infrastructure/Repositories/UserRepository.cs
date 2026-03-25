@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +37,12 @@ namespace InoxServer.Infrastructure.Repositories
         {
             return await _context.Users
                 .FirstOrDefaultAsync(x => x.Email == email, cancellationToken);
+        }
+
+        public async Task<User?> GetByVerificationTokenAsync(string token, CancellationToken cancellationToken = default)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.EmailVerificationToken == token, cancellationToken);
         }
 
         public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)

@@ -1,11 +1,7 @@
-﻿using InoxServer.Application.Features.Products.DTOs;
+using InoxServer.Application.Features.Products.DTOs;
+using InoxServer.Domain.Errors;
 using InoxServer.Domain.Interfaces.Repositories;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InoxServer.Application.Features.Products.Queries.GetProductById
 {
@@ -23,7 +19,7 @@ namespace InoxServer.Application.Features.Products.Queries.GetProductById
             var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (product == null)
-                return null;
+                throw new DomainException(ProductErrors.NotFound);
 
             return new ProductDto
             {

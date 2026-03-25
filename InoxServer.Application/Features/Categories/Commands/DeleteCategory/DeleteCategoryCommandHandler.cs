@@ -1,4 +1,5 @@
-using InoxServer.Domain.Interfaces;
+using InoxServer.Domain.Errors;
+using InoxServer.Domain.Interfaces.Services;
 using InoxServer.Domain.Interfaces.Repositories;
 using MediatR;
 
@@ -22,7 +23,7 @@ namespace InoxServer.Application.Features.Categories.Commands.DeleteCategory
             var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (category == null)
-                return false;
+                throw new DomainException(CategoryErrors.NotFound);
 
             _categoryRepository.Delete(category);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

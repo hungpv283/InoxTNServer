@@ -1,5 +1,6 @@
 using InoxServer.Domain.Entities;
-using InoxServer.Domain.Interfaces;
+using InoxServer.Domain.Errors;
+using InoxServer.Domain.Interfaces.Services;
 using InoxServer.Domain.Interfaces.Repositories;
 using MediatR;
 
@@ -22,13 +23,13 @@ namespace InoxServer.Application.Features.Categories.Commands.CreateCategory
         {
             var slugExists = await _categoryRepository.ExistsBySlugAsync(request.Slug, cancellationToken);
             if (slugExists)
-                throw new Exception($"Slug '{request.Slug}' already exists");
+                throw new DomainException(CategoryErrors.SlugAlreadyExists);
 
             if (request.ParentId.HasValue)
             {
                 var parentExists = await _categoryRepository.ExistsAsync(request.ParentId.Value, cancellationToken);
                 if (!parentExists)
-                    throw new Exception("Parent category does not exist");
+                    throw new DomainException(CategoryErrors.ParentNotFound);
             }
 
             var category = new Category

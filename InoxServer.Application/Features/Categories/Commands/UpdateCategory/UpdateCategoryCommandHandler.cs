@@ -1,4 +1,5 @@
-using InoxServer.Domain.Interfaces;
+using InoxServer.Domain.Errors;
+using InoxServer.Domain.Interfaces.Services;
 using InoxServer.Domain.Interfaces.Repositories;
 using MediatR;
 
@@ -22,20 +23,20 @@ namespace InoxServer.Application.Features.Categories.Commands.UpdateCategory
             var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (category == null)
-                return false;
+                throw new DomainException(CategoryErrors.NotFound);
 
             var slugExists = await _categoryRepository.ExistsBySlugAsync(request.Slug, cancellationToken);
             if (slugExists && category.Slug != request.Slug)
-                throw new Exception($"Slug '{request.Slug}' already exists");
+                throw new DomainException(CategoryErrors.SlugAlreadyExists);
 
             if (request.ParentId.HasValue)
             {
                 if (request.ParentId.Value == request.Id)
-                    throw new Exception("Category cannot be its own parent");
+                    throw new DomainException(CategoryErrors.CannotBeOwnParent);
 
                 var parentExists = await _categoryRepository.ExistsAsync(request.ParentId.Value, cancellationToken);
                 if (!parentExists)
-                    throw new Exception("Parent category does not exist");
+                    throw new DomainException(CategoryErrors.ParentNotFound);
             }
 
             category.ParentId = request.ParentId;

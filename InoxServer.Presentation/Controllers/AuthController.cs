@@ -1,7 +1,7 @@
 using InoxServer.Application.Features.Auth.Commands.Login;
 using InoxServer.Application.Features.Auth.Commands.Register;
+using InoxServer.Application.Features.Auth.Commands.VerifyEmail;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InoxServer.Presentation.Controllers
@@ -29,6 +29,14 @@ namespace InoxServer.Presentation.Controllers
         {
             var result = await _mediator.Send(command);
             return Ok(result);
+        }
+
+        [HttpGet("verify-email")]
+        public async Task<IActionResult> VerifyEmail([FromQuery] string token)
+        {
+            var command = new VerifyEmailCommand { Token = token };
+            await _mediator.Send(command);
+            return Ok(new { message = "Email đã được xác thực thành công." });
         }
     }
 }
