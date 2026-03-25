@@ -22,5 +22,8 @@ namespace InoxServer.Domain.Errors
 
         public static readonly Error EmailAlreadyVerified =
             Error.Conflict(DomainErrorCodes.Auth.EmailAlreadyVerified, "Email này đã được xác thực trước đó.");
+
+        public static readonly Error ResendVerificationTooSoon =
+            Error.BadRequest(DomainErrorCodes.Auth.ResendVerificationTooSoon, "Vui lòng chờ ít nhất 2 phút trước khi yêu cầu gửi lại email xác thực.");
     }
 }
