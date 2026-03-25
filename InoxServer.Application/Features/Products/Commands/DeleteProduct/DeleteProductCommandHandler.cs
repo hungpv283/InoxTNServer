@@ -1,11 +1,7 @@
-﻿using InoxServer.Domain.Interfaces.Repositories;
-using InoxServer.Domain.Interfaces;
+using InoxServer.Domain.Errors;
+using InoxServer.Domain.Interfaces.Repositories;
+using InoxServer.Domain.Interfaces.Services;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InoxServer.Application.Features.Products.Commands.DeleteProduct
 {
@@ -27,7 +23,7 @@ namespace InoxServer.Application.Features.Products.Commands.DeleteProduct
             var product = await _productRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (product == null)
-                return false;
+                throw new DomainException(ProductErrors.NotFound);
 
             _productRepository.Delete(product);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

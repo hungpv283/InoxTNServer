@@ -1,4 +1,5 @@
 using InoxServer.Application.Features.Categories.DTOs;
+using InoxServer.Domain.Errors;
 using InoxServer.Domain.Interfaces.Repositories;
 using MediatR;
 
@@ -18,7 +19,7 @@ namespace InoxServer.Application.Features.Categories.Queries.GetCategoryById
             var category = await _categoryRepository.GetByIdAsync(request.Id, cancellationToken);
 
             if (category == null)
-                return null;
+                throw new DomainException(CategoryErrors.NotFound);
 
             return new CategoryDto
             {

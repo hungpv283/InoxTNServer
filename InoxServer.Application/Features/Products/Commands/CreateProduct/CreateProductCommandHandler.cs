@@ -1,12 +1,8 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
+using InoxServer.Domain.Errors;
 using InoxServer.Domain.Interfaces.Repositories;
-using InoxServer.Domain.Interfaces;
+using InoxServer.Domain.Interfaces.Services;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InoxServer.Application.Features.Products.Commands.CreateProduct
 {
@@ -30,7 +26,7 @@ namespace InoxServer.Application.Features.Products.Commands.CreateProduct
         {
             var exists = await _categoryRepository.ExistsAsync(request.CategoryId, cancellationToken);
             if (!exists)
-                throw new Exception("Category does not exist");
+                throw new DomainException(ProductErrors.CategoryNotFound);
 
             var product = new Product
             {
