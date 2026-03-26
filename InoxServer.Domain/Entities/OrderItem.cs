@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +9,8 @@ namespace InoxServer.Domain.Entities
 {
     public class OrderItem : BaseEntity
     {
-        public int OrderId { get; set; }
-        public int ProductId { get; set; }
+        public Guid OrderId { get; set; }
+        public Guid ProductId { get; set; }
         public string ProductName { get; set; } = default!;
         public string Sku { get; set; } = default!;
         public short Quantity { get; set; }

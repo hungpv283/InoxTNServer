@@ -11,13 +11,15 @@ namespace InoxServer.Domain.Interfaces.Repositories
     {
         Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
         Task<User?> GetByVerificationTokenAsync(string token, CancellationToken cancellationToken = default);
 
-        Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default);
+        Task<User?> GetByPasswordResetTokenAsync(string token, CancellationToken cancellationToken = default);
+
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
 

@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.SharedKernel.Common;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace InoxServer.Domain.Interfaces.Repositories
     {
         Task<List<Product>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<Product?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default);
 
@@ -22,7 +22,7 @@ namespace InoxServer.Domain.Interfaces.Repositories
 
         void Delete(Product product);
 
-        Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default);
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<int> CountAsync(CancellationToken cancellationToken = default);
 
@@ -30,7 +30,7 @@ namespace InoxServer.Domain.Interfaces.Repositories
              int page,
              int pageSize,
              string? keyword,
-             int? categoryId,
+             Guid? categoryId,
              decimal? minPrice,
              decimal? maxPrice,
              bool? isActive,

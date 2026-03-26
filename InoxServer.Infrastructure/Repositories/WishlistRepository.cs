@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ namespace InoxServer.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<List<Wishlist>> GetByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<List<Wishlist>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             return await _context.Wishlists
                 .AsNoTracking()
@@ -29,7 +29,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Wishlist?> GetByUserAndProductAsync(int userId, int productId, CancellationToken cancellationToken = default)
+        public async Task<Wishlist?> GetByUserAndProductAsync(Guid userId, Guid productId, CancellationToken cancellationToken = default)
         {
             return await _context.Wishlists
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.ProductId == productId, cancellationToken);

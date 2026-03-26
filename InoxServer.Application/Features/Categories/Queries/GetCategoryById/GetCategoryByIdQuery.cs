@@ -5,9 +5,9 @@ namespace InoxServer.Application.Features.Categories.Queries.GetCategoryById
 {
     public class GetCategoryByIdQuery : IRequest<CategoryDto?>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public GetCategoryByIdQuery(int id)
+        public GetCategoryByIdQuery(Guid id)
         {
             Id = id;
         }

@@ -7,7 +7,7 @@ namespace InoxServer.Application.Features.Categories.Queries.GetCategories
     public class GetCategoriesQuery : PaginationRequest, IRequest<PagedResult<CategoryDto>>
     {
         public string? Keyword { get; set; }
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         public bool? IsActive { get; set; }
     }
 }

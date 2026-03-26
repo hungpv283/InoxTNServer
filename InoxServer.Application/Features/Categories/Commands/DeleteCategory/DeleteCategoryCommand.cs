@@ -4,9 +4,9 @@ namespace InoxServer.Application.Features.Categories.Commands.DeleteCategory
 {
     public class DeleteCategoryCommand : IRequest<bool>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        public DeleteCategoryCommand(int id)
+        public DeleteCategoryCommand(Guid id)
         {
             Id = id;
         }

@@ -6,7 +6,7 @@ using MediatR;
 
 namespace InoxServer.Application.Features.Products.Commands.CreateProduct
 {
-    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, int>
+    public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>
     {
         private readonly IProductRepository _productRepository;
         private readonly ICategoryRepository _categoryRepository;
@@ -22,7 +22,7 @@ namespace InoxServer.Application.Features.Products.Commands.CreateProduct
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var exists = await _categoryRepository.ExistsAsync(request.CategoryId, cancellationToken);
             if (!exists)

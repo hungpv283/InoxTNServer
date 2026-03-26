@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ namespace InoxServer.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<List<Review>> GetByProductIdAsync(int productId, CancellationToken cancellationToken = default)
+        public async Task<List<Review>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default)
         {
             return await _context.Reviews
                 .AsNoTracking()
@@ -28,13 +28,13 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Review?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Review?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Reviews
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<Review?> GetByUserAndProductAsync(int userId, int productId, CancellationToken cancellationToken = default)
+        public async Task<Review?> GetByUserAndProductAsync(Guid userId, Guid productId, CancellationToken cancellationToken = default)
         {
             return await _context.Reviews
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.ProductId == productId, cancellationToken);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +8,8 @@ namespace InoxServer.Application.Features.Products.DTOs
 {
     public class ProductDto
     {
-        public int Id { get; set; }
-        public int CategoryId { get; set; }
+        public Guid Id { get; set; }
+        public Guid CategoryId { get; set; }
         public string Name { get; set; } = default!;
         public string Slug { get; set; } = default!;
         public decimal Price { get; set; }

@@ -41,7 +41,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Category?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Categories
                 .Include(x => x.Children)
@@ -55,7 +55,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Slug == slug, cancellationToken);
         }
 
-        public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Categories.AnyAsync(x => x.Id == id, cancellationToken);
         }
@@ -84,7 +84,7 @@ namespace InoxServer.Infrastructure.Repositories
             int page,
             int pageSize,
             string? keyword,
-            int? parentId,
+            Guid? parentId,
             bool? isActive,
             CancellationToken cancellationToken = default)
         {

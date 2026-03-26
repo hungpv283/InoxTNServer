@@ -6,7 +6,7 @@ using MediatR;
 
 namespace InoxServer.Application.Features.Categories.Commands.CreateCategory
 {
-    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, int>
+    public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand, Guid>
     {
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -19,7 +19,7 @@ namespace InoxServer.Application.Features.Categories.Commands.CreateCategory
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
             var slugExists = await _categoryRepository.ExistsBySlugAsync(request.Slug, cancellationToken);
             if (slugExists)

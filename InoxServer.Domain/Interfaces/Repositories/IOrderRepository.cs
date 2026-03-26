@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +11,13 @@ namespace InoxServer.Domain.Interfaces.Repositories
     {
         Task<List<Order>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<List<Order>> GetByUserIdAsync(int userId, CancellationToken cancellationToken = default);
+        Task<List<Order>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 
-        Task<Order?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<Order?> GetByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 
-        Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default);
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<bool> ExistsByOrderNumberAsync(string orderNumber, CancellationToken cancellationToken = default);
 

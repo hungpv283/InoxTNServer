@@ -28,8 +28,8 @@ public class CategoriesController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetCategoryByIdQuery(id));
         return result == null ? NotFound() : Ok(result);
@@ -49,8 +49,8 @@ public class CategoriesController : ControllerBase
         return result ? Ok() : NotFound();
     }
 
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _mediator.Send(new DeleteCategoryCommand(id));
         return result ? Ok() : NotFound();

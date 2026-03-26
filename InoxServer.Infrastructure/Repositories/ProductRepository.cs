@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -28,7 +28,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Product?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Products
                 .Include(x => x.Category)
@@ -57,7 +57,7 @@ namespace InoxServer.Infrastructure.Repositories
             _context.Products.Remove(product);
         }
 
-        public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Products.AnyAsync(x => x.Id == id, cancellationToken);
         }
@@ -70,7 +70,7 @@ namespace InoxServer.Infrastructure.Repositories
     int page,
     int pageSize,
     string? keyword,
-    int? categoryId,
+    Guid? categoryId,
     decimal? minPrice,
     decimal? maxPrice,
     bool? isActive,

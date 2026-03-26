@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace InoxServer.Domain.Interfaces.Repositories
 
         Task<List<Banner>> GetActiveAsync(CancellationToken cancellationToken = default);
 
-        Task<Banner?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Banner?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task AddAsync(Banner banner, CancellationToken cancellationToken = default);
 

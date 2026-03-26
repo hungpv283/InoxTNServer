@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using InoxServer.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -10,8 +10,8 @@ namespace InoxServer.Domain.Entities
 {
     public class InventoryLog : BaseEntity
     {
-        public int ProductId { get; set; }
-        public int AdminId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid AdminId { get; set; }
         public InventoryLogType Type { get; set; }
         public int QuantityChange { get; set; }
         public int StockBefore { get; set; }

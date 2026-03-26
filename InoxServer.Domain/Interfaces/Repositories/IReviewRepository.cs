@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace InoxServer.Domain.Interfaces.Repositories
 {
     public interface IReviewRepository
     {
-        Task<List<Review>> GetByProductIdAsync(int productId, CancellationToken cancellationToken = default);
+        Task<List<Review>> GetByProductIdAsync(Guid productId, CancellationToken cancellationToken = default);
 
-        Task<Review?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Review?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<Review?> GetByUserAndProductAsync(int userId, int productId, CancellationToken cancellationToken = default);
+        Task<Review?> GetByUserAndProductAsync(Guid userId, Guid productId, CancellationToken cancellationToken = default);
 
         Task AddAsync(Review review, CancellationToken cancellationToken = default);
 

@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace InoxServer.Domain.Entities
 {
     public class Review : BaseEntity
     {
-        public int ProductId { get; set; }
-        public int UserId { get; set; }
-        public int? OrderId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid? OrderId { get; set; }
         public byte Rating { get; set; }
         public string? Comment { get; set; }
         public bool IsApproved { get; set; } = false;

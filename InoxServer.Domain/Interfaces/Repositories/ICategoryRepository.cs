@@ -14,11 +14,11 @@ namespace InoxServer.Domain.Interfaces.Repositories
 
         Task<List<Category>> GetRootCategoriesAsync(CancellationToken cancellationToken = default);
 
-        Task<Category?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<Category?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default);
 
-        Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default);
+        Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<bool> ExistsBySlugAsync(string slug, CancellationToken cancellationToken = default);
 
@@ -32,7 +32,7 @@ namespace InoxServer.Domain.Interfaces.Repositories
             int page,
             int pageSize,
             string? keyword,
-            int? parentId,
+            Guid? ParentId,
             bool? isActive,
             CancellationToken cancellationToken = default);
     }
