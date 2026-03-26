@@ -91,8 +91,16 @@ namespace InoxServer.Domain.Errors
 
         public static class Cart
         {
-            public const string NotFound = "CART_NOT_FOUND";
-            public const string ItemNotFound = "CART_ITEM_NOT_FOUND";
+            public const string NotFound = "Cart.NotFound";
+            public const string Empty = "Cart.Empty";
+            public const string ItemNotFound = "Cart.ItemNotFound";
+            public const string ProductNotFound = "Cart.ProductNotFound";
+            public const string ProductInactive = "Cart.ProductInactive";
+            public const string QuantityInvalid = "Cart.QuantityInvalid";
+            public const string ExceedStock = "Cart.ExceedStock";
+            public const string DuplicateItem = "Cart.DuplicateItem";
+            public const string CheckoutEmpty = "Cart.CheckoutEmpty";
+            public const string UnauthorizedAccess = "Cart.UnauthorizedAccess";
         }
 
         public static class General
