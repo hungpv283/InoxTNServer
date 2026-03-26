@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 using InoxServer.Application.Features.Products.Commands.CreateProduct;
 using InoxServer.Application.Features.Products.Commands.DeleteProduct;
 using InoxServer.Application.Features.Products.Commands.UpdateProduct;
@@ -29,8 +29,8 @@ public class ProductsController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> GetById(int id)
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetProductByIdQuery(id));
         return result == null ? NotFound() : Ok(result);
@@ -52,8 +52,8 @@ public class ProductsController : ControllerBase
     }
 
     [Authorize(Roles = "Admin")]
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
         var result = await _mediator.Send(new DeleteProductCommand(id));
         return result ? Ok() : NotFound();

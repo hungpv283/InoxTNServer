@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using InoxServer.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -10,8 +10,8 @@ namespace InoxServer.Domain.Entities
 {
     public class OrderStatusLog : BaseEntity
     {
-        public int OrderId { get; set; }
-        public int? AdminId { get; set; }
+        public Guid OrderId { get; set; }
+        public Guid? AdminId { get; set; }
         public OrderStatus StatusFrom { get; set; }
         public OrderStatus StatusTo { get; set; }
         public string? Note { get; set; }

@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +9,9 @@ namespace InoxServer.Domain.Interfaces.Repositories
 {
     public interface IPaymentRepository
     {
-        Task<Payment?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Payment?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<Payment?> GetByOrderIdAsync(int orderId, CancellationToken cancellationToken = default);
+        Task<Payment?> GetByOrderIdAsync(Guid orderId, CancellationToken cancellationToken = default);
 
         Task<Payment?> GetByPayosOrderCodeAsync(long payosOrderCode, CancellationToken cancellationToken = default);
 

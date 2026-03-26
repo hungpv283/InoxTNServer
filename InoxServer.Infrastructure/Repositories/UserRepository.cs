@@ -27,7 +27,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<User?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Users
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
@@ -45,7 +45,13 @@ namespace InoxServer.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.EmailVerificationToken == token, cancellationToken);
         }
 
-        public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<User?> GetByPasswordResetTokenAsync(string token, CancellationToken cancellationToken = default)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(x => x.PasswordResetToken == token, cancellationToken);
+        }
+
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Users.AnyAsync(x => x.Id == id, cancellationToken);
         }

@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using InoxServer.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace InoxServer.Domain.Entities
 {
     public class Payment : BaseEntity
     {
-        public int OrderId { get; set; }
+        public Guid OrderId { get; set; }
         public PaymentMethod Method { get; set; }
         public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
         public decimal Amount { get; set; }

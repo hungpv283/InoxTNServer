@@ -2,9 +2,9 @@ using MediatR;
 
 namespace InoxServer.Application.Features.Categories.Commands.CreateCategory
 {
-    public class CreateCategoryCommand : IRequest<int>
+    public class CreateCategoryCommand : IRequest<Guid>
     {
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         public string Name { get; set; } = default!;
         public string Slug { get; set; } = default!;
         public string? Description { get; set; }

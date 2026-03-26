@@ -1,11 +1,8 @@
-﻿using MediatR;
+using FluentValidation;
+using InoxServer.Application.Behaviors;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InoxServer.Application
 {
@@ -13,8 +10,15 @@ namespace InoxServer.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
+            var assembly = Assembly.GetExecutingAssembly();
+
             services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+            {
+                cfg.RegisterServicesFromAssembly(assembly);
+                cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            });
+
+            services.AddValidatorsFromAssembly(assembly);
 
             return services;
         }

@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +19,7 @@ namespace InoxServer.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Cart?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Cart?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Carts
                 .Include(x => x.CartItems)
@@ -27,7 +27,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<Cart?> GetByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<Cart?> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             return await _context.Carts
                 .Include(x => x.CartItems)
@@ -35,7 +35,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.UserId == userId, cancellationToken);
         }
 
-        public async Task<bool> ExistsByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistsByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             return await _context.Carts.AnyAsync(x => x.UserId == userId, cancellationToken);
         }

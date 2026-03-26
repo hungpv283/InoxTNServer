@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -27,7 +27,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Coupon?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Coupon?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Coupons.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }

@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace InoxServer.Domain.Entities
 {
     public class Category : BaseEntity
     {
-        public int? ParentId { get; set; }
+        public Guid? ParentId { get; set; }
         public string Name { get; set; } = default!;
         public string Slug { get; set; } = default!;
         public string? Description { get; set; }

@@ -12,6 +12,9 @@ namespace InoxServer.Domain.Errors
             public const string VerificationTokenExpired = "AUTH_VERIFICATION_TOKEN_EXPIRED";
             public const string EmailAlreadyVerified = "AUTH_EMAIL_ALREADY_VERIFIED";
             public const string ResendVerificationTooSoon = "AUTH_RESEND_VERIFICATION_TOO_SOON";
+            public const string InvalidPasswordResetToken = "AUTH_INVALID_PASSWORD_RESET_TOKEN";
+            public const string PasswordResetTokenExpired = "AUTH_PASSWORD_RESET_TOKEN_EXPIRED";
+            public const string WrongCurrentPassword = "AUTH_WRONG_CURRENT_PASSWORD";
         }
 
         public static class User

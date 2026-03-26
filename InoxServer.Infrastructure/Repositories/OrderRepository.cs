@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +29,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<List<Order>> GetByUserIdAsync(int userId, CancellationToken cancellationToken = default)
+        public async Task<List<Order>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
             return await _context.Orders
                 .AsNoTracking()
@@ -40,7 +40,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Order?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Orders
                 .Include(x => x.OrderItems)
@@ -58,7 +58,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.OrderNumber == orderNumber, cancellationToken);
         }
 
-        public async Task<bool> ExistsAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Orders.AnyAsync(x => x.Id == id, cancellationToken);
         }

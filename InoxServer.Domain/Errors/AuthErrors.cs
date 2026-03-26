@@ -25,5 +25,14 @@ namespace InoxServer.Domain.Errors
 
         public static readonly Error ResendVerificationTooSoon =
             Error.BadRequest(DomainErrorCodes.Auth.ResendVerificationTooSoon, "Vui lòng chờ ít nhất 2 phút trước khi yêu cầu gửi lại email xác thực.");
+
+        public static readonly Error InvalidPasswordResetToken =
+            Error.BadRequest(DomainErrorCodes.Auth.InvalidPasswordResetToken, "Token đặt lại mật khẩu không hợp lệ hoặc không tồn tại.");
+
+        public static readonly Error PasswordResetTokenExpired =
+            Error.BadRequest(DomainErrorCodes.Auth.PasswordResetTokenExpired, "Token đặt lại mật khẩu đã hết hạn.");
+
+        public static readonly Error WrongCurrentPassword =
+            Error.BadRequest(DomainErrorCodes.Auth.WrongCurrentPassword, "Mật khẩu hiện tại không đúng.");
     }
 }

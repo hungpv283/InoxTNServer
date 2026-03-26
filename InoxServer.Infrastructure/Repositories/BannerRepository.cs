@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -38,7 +38,7 @@ namespace InoxServer.Infrastructure.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Banner?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Banner?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Banners.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }

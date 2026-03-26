@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace InoxServer.Domain.Interfaces.Repositories
     {
         Task<List<Coupon>> GetAllAsync(CancellationToken cancellationToken = default);
 
-        Task<Coupon?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Coupon?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
         Task<Coupon?> GetByCodeAsync(string code, CancellationToken cancellationToken = default);
 

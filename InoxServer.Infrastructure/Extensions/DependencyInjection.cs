@@ -3,6 +3,7 @@ using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using InoxServer.Infrastructure.Repositories;
 using InoxServer.Infrastructure.Services.Auth;
+using InoxServer.Infrastructure.Services.Cloudinary;
 using InoxServer.Infrastructure.Services.EmailService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,7 @@ namespace InoxServer.Infrastructure.Extensions
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             // =========================
             // Unit Of Work

@@ -1,9 +1,14 @@
+using InoxServer.Application.Features.Auth.Commands.ChangePassword;
+using InoxServer.Application.Features.Auth.Commands.ForgotPassword;
 using InoxServer.Application.Features.Auth.Commands.Login;
 using InoxServer.Application.Features.Auth.Commands.Register;
 using InoxServer.Application.Features.Auth.Commands.ResendVerifyEmail;
+using InoxServer.Application.Features.Auth.Commands.ResetPassword;
 using InoxServer.Application.Features.Auth.Commands.VerifyEmail;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace InoxServer.Presentation.Controllers
 {
@@ -45,6 +50,29 @@ namespace InoxServer.Presentation.Controllers
         {
             await _mediator.Send(command);
             return Ok(new { message = "Email xác thực đã được gửi lại. Vui lòng kiểm tra hộp thư của bạn." });
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok(new { message = "Nếu email tồn tại, chúng tôi đã gửi hướng dẫn đặt lại mật khẩu." });
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand command)
+        {
+            await _mediator.Send(command);
+            return Ok(new { message = "Mật khẩu đã được đặt lại thành công." });
+        }
+
+        [Authorize]
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand command)
+        {
+            command.UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _mediator.Send(command);
+            return Ok(new { message = "Mật khẩu đã được thay đổi thành công." });
         }
     }
 }

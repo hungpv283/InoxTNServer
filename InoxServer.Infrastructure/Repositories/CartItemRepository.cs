@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -19,20 +19,20 @@ namespace InoxServer.Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<CartItem?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<CartItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.CartItems
                 .Include(x => x.Product)
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
-        public async Task<CartItem?> GetByCartAndProductAsync(int cartId, int productId, CancellationToken cancellationToken = default)
+        public async Task<CartItem?> GetByCartAndProductAsync(Guid cartId, Guid productId, CancellationToken cancellationToken = default)
         {
             return await _context.CartItems
                 .FirstOrDefaultAsync(x => x.CartId == cartId && x.ProductId == productId, cancellationToken);
         }
 
-        public async Task<List<CartItem>> GetByCartIdAsync(int cartId, CancellationToken cancellationToken = default)
+        public async Task<List<CartItem>> GetByCartIdAsync(Guid cartId, CancellationToken cancellationToken = default)
         {
             return await _context.CartItems
                 .AsNoTracking()

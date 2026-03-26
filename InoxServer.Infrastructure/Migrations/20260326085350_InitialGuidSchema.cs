@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace InoxServer.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialGuidSchema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,7 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "banners",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     image_url = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     link_url = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
@@ -33,9 +32,8 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "categories",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    parent_id = table.Column<int>(type: "int", nullable: true),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    parent_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     slug = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -59,8 +57,7 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "coupons",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     type = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     value = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
@@ -82,8 +79,7 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
                     password_hash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
@@ -93,6 +89,10 @@ namespace InoxServer.Infrastructure.Migrations
                     Role = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     is_active = table.Column<bool>(type: "bit", nullable: false),
                     email_verified_at = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EmailVerificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EmailVerificationTokenExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PasswordResetToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordResetTokenExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     created_at = table.Column<DateTime>(type: "datetime2", nullable: false),
                     updated_at = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -105,9 +105,8 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "products",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    category_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    category_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     slug = table.Column<string>(type: "nvarchar(220)", maxLength: 220, nullable: false),
                     description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -141,9 +140,8 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "carts",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     updated_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
@@ -162,9 +160,8 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "orders",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     order_number = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     subtotal = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     shipping_fee = table.Column<decimal>(type: "decimal(10,2)", nullable: false, defaultValue: 0m),
@@ -195,10 +192,9 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "inventory_logs",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    product_id = table.Column<int>(type: "int", nullable: false),
-                    admin_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    admin_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     quantity_change = table.Column<int>(type: "int", nullable: false),
                     stock_before = table.Column<int>(type: "int", nullable: false),
@@ -230,9 +226,8 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "product_images",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    product_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     image_url = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     alt_text = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     is_primary = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
@@ -253,10 +248,9 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "wishlists",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    product_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     added_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
                 constraints: table =>
@@ -280,10 +274,9 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "cart_items",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    cart_id = table.Column<int>(type: "int", nullable: false),
-                    product_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    cart_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     quantity = table.Column<short>(type: "smallint", nullable: false),
                     unit_price = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
                     added_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
@@ -309,11 +302,10 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "coupon_usages",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    coupon_id = table.Column<int>(type: "int", nullable: false),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    order_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    coupon_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     discount_applied = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     used_at = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()")
                 },
@@ -344,10 +336,9 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "order_items",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    order_id = table.Column<int>(type: "int", nullable: false),
-                    product_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     product_name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     sku = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     quantity = table.Column<short>(type: "smallint", nullable: false),
@@ -375,10 +366,9 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "order_status_logs",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    order_id = table.Column<int>(type: "int", nullable: false),
-                    admin_id = table.Column<int>(type: "int", nullable: true),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    admin_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     status_from = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     status_to = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     note = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -405,9 +395,8 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "payments",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    order_id = table.Column<int>(type: "int", nullable: false),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     method = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Pending"),
                     amount = table.Column<decimal>(type: "decimal(12,2)", nullable: false),
@@ -436,11 +425,10 @@ namespace InoxServer.Infrastructure.Migrations
                 name: "reviews",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    product_id = table.Column<int>(type: "int", nullable: false),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    order_id = table.Column<int>(type: "int", nullable: true),
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    product_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    user_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    order_id = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     rating = table.Column<byte>(type: "tinyint", nullable: false),
                     comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     is_approved = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),

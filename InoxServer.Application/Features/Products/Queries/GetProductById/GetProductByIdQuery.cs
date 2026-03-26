@@ -1,4 +1,4 @@
-﻿using InoxServer.Application.Features.Products.DTOs;
+using InoxServer.Application.Features.Products.DTOs;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace InoxServer.Application.Features.Products.Queries.GetProductById
 {
-    public record GetProductByIdQuery(int Id) : IRequest<ProductDto?>;
+    public record GetProductByIdQuery(Guid Id) : IRequest<ProductDto?>;
 }

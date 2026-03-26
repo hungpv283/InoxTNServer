@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Entities;
+using InoxServer.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace InoxServer.Domain.Interfaces.Repositories
 {
     public interface ICartItemRepository
     {
-        Task<CartItem?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<CartItem?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<CartItem?> GetByCartAndProductAsync(int cartId, int productId, CancellationToken cancellationToken = default);
+        Task<CartItem?> GetByCartAndProductAsync(Guid cartId, Guid productId, CancellationToken cancellationToken = default);
 
-        Task<List<CartItem>> GetByCartIdAsync(int cartId, CancellationToken cancellationToken = default);
+        Task<List<CartItem>> GetByCartIdAsync(Guid cartId, CancellationToken cancellationToken = default);
 
         Task AddAsync(CartItem cartItem, CancellationToken cancellationToken = default);
 
