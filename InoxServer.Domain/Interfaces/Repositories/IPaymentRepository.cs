@@ -15,6 +15,8 @@ namespace InoxServer.Domain.Interfaces.Repositories
 
         Task<Payment?> GetByPayosOrderCodeAsync(long payosOrderCode, CancellationToken cancellationToken = default);
 
+        Task<bool> ExistsByPayosOrderCodeAsync(long payosOrderCode, CancellationToken cancellationToken = default);
+
         Task AddAsync(Payment payment, CancellationToken cancellationToken = default);
 
         void Update(Payment payment);

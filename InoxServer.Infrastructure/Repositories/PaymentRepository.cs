@@ -40,6 +40,11 @@ namespace InoxServer.Infrastructure.Repositories
                 .FirstOrDefaultAsync(x => x.PayosOrderCode == payosOrderCode, cancellationToken);
         }
 
+        public async Task<bool> ExistsByPayosOrderCodeAsync(long payosOrderCode, CancellationToken cancellationToken = default)
+        {
+            return await _context.Payments.AnyAsync(x => x.PayosOrderCode == payosOrderCode, cancellationToken);
+        }
+
         public async Task AddAsync(Payment payment, CancellationToken cancellationToken = default)
         {
             await _context.Payments.AddAsync(payment, cancellationToken);

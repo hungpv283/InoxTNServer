@@ -1,15 +1,20 @@
 using InoxServer.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using InoxServer.Domain.Enums;
+using InoxServer.SharedKernel.Common;
 
 namespace InoxServer.Domain.Interfaces.Repositories
 {
     public interface IOrderRepository
     {
         Task<List<Order>> GetAllAsync(CancellationToken cancellationToken = default);
+
+        Task<PagedResult<Order>> GetPagedAsync(
+            int page,
+            int pageSize,
+            OrderStatus? status,
+            string? orderNumber,
+            Guid? userId,
+            CancellationToken cancellationToken = default);
 
         Task<List<Order>> GetByUserIdAsync(Guid userId, CancellationToken cancellationToken = default);
 

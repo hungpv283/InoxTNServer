@@ -1,10 +1,12 @@
 using InoxServer.Application.Features.Cart.DTOs;
+using InoxServer.Domain.Configuration;
 using InoxServer.Domain.Entities;
 using InoxServer.Domain.Enums;
 using InoxServer.Domain.Errors;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.Domain.Interfaces.Services;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace InoxServer.Application.Features.Cart.Commands.CheckoutCart;
 
@@ -13,21 +15,90 @@ public class CheckoutCartCommandHandler : IRequestHandler<CheckoutCartCommand, C
     private readonly ICartRepository _cartRepository;
     private readonly IProductRepository _productRepository;
     private readonly IOrderRepository _orderRepository;
+    private readonly IPaymentRepository _paymentRepository;
+    private readonly IPayOsPaymentClient _payOsPaymentClient;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly AppOptions _appOptions;
 
     public CheckoutCartCommandHandler(
         ICartRepository cartRepository,
         IProductRepository productRepository,
         IOrderRepository orderRepository,
-        IUnitOfWork unitOfWork)
+        IPaymentRepository paymentRepository,
+        IPayOsPaymentClient payOsPaymentClient,
+        IUnitOfWork unitOfWork,
+        IOptions<AppOptions> appOptions)
     {
         _cartRepository = cartRepository;
         _productRepository = productRepository;
         _orderRepository = orderRepository;
+        _paymentRepository = paymentRepository;
+        _payOsPaymentClient = payOsPaymentClient;
         _unitOfWork = unitOfWork;
+        _appOptions = appOptions.Value;
     }
 
     public async Task<CheckoutCartResponseDto> Handle(CheckoutCartCommand request, CancellationToken cancellationToken)
+    {
+        var built = await _unitOfWork.ExecuteInTransactionAsync(
+            async () => await BuildOrderAndPaymentAsync(request, cancellationToken),
+            cancellationToken);
+
+        if (request.PaymentMethod != PaymentMethod.PayOS)
+        {
+            return new CheckoutCartResponseDto
+            {
+                OrderId = built.Order.Id,
+                OrderNumber = built.Order.OrderNumber,
+                TotalAmount = built.Order.TotalAmount,
+                PaymentMethod = request.PaymentMethod,
+                PaymentId = built.Payment.Id,
+                PayOsCheckoutUrl = null,
+                PayOsQrCode = null
+            };
+        }
+
+        var amountVnd = (long)Math.Round(built.Order.TotalAmount, MidpointRounding.AwayFromZero);
+        var desc = built.Order.OrderNumber.Length <= 9 ? built.Order.OrderNumber : built.Order.OrderNumber[..9];
+
+        var link = await _payOsPaymentClient.CreatePaymentLinkAsync(
+            built.Payment.PayosOrderCode!.Value,
+            amountVnd,
+            desc,
+            built.ReturnUrl,
+            built.CancelUrl,
+            cancellationToken);
+
+        await _unitOfWork.ExecuteInTransactionAsync(
+            async () =>
+            {
+                var payment = await _paymentRepository.GetByIdAsync(built.Payment.Id, cancellationToken);
+                if (payment is null)
+                    throw new DomainException(PaymentErrors.NotFound);
+
+                payment.PayosCheckoutUrl = link.CheckoutUrl;
+                payment.PayosQrCode = link.QrCode;
+                payment.PayosPaymentLinkId = link.PaymentLinkId;
+                _paymentRepository.Update(payment);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            },
+            cancellationToken);
+
+        return new CheckoutCartResponseDto
+        {
+            OrderId = built.Order.Id,
+            OrderNumber = built.Order.OrderNumber,
+            TotalAmount = built.Order.TotalAmount,
+            PaymentMethod = request.PaymentMethod,
+            PaymentId = built.Payment.Id,
+            PayOsCheckoutUrl = link.CheckoutUrl,
+            PayOsQrCode = link.QrCode
+        };
+    }
+
+    private async Task<CheckoutBuiltState> BuildOrderAndPaymentAsync(
+        CheckoutCartCommand request,
+        CancellationToken cancellationToken)
     {
         var cart = await _cartRepository.GetByUserIdAsync(request.UserId, cancellationToken);
         if (cart is null)
@@ -35,6 +106,10 @@ public class CheckoutCartCommandHandler : IRequestHandler<CheckoutCartCommand, C
 
         if (!cart.CartItems.Any())
             throw new DomainException(CartErrors.CheckoutEmpty);
+
+        if (request.PaymentMethod != PaymentMethod.Cod && request.PaymentMethod != PaymentMethod.PayOS)
+            throw new DomainException(
+                Error.BadRequest(DomainErrorCodes.General.InvalidOperation, "Chỉ hỗ trợ thanh toán COD hoặc PayOS."));
 
         var utcNow = DateTime.UtcNow;
 
@@ -54,7 +129,6 @@ public class CheckoutCartCommandHandler : IRequestHandler<CheckoutCartCommand, C
             UpdatedAt = utcNow,
         };
 
-        // Validate stock + build order items (and update product stock)
         foreach (var cartItem in cart.CartItems)
         {
             var product = cartItem.Product ?? await _productRepository.GetByIdAsync(cartItem.ProductId, cancellationToken);
@@ -94,18 +168,52 @@ public class CheckoutCartCommandHandler : IRequestHandler<CheckoutCartCommand, C
 
         await _orderRepository.AddAsync(order, cancellationToken);
 
-        // Clear cart after successful checkout
+        Payment payment;
+
+        if (request.PaymentMethod == PaymentMethod.Cod)
+        {
+            payment = new Payment
+            {
+                OrderId = order.Id,
+                Method = PaymentMethod.Cod,
+                Status = PaymentStatus.Pending,
+                Amount = order.TotalAmount,
+                CreatedAt = utcNow
+            };
+            await _paymentRepository.AddAsync(payment, cancellationToken);
+        }
+        else
+        {
+            var payOsCode = await GenerateUniquePayOsOrderCode(cancellationToken);
+
+            payment = new Payment
+            {
+                OrderId = order.Id,
+                Method = PaymentMethod.PayOS,
+                Status = PaymentStatus.Pending,
+                Amount = order.TotalAmount,
+                CreatedAt = utcNow,
+                PayosOrderCode = payOsCode
+            };
+            await _paymentRepository.AddAsync(payment, cancellationToken);
+        }
+
         _cartRepository.Delete(cart);
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return new CheckoutCartResponseDto
-        {
-            OrderId = order.Id,
-            OrderNumber = order.OrderNumber,
-            TotalAmount = order.TotalAmount
-        };
+        var baseFront = _appOptions.FrontendUrl.TrimEnd('/');
+        var returnUrl = string.IsNullOrWhiteSpace(request.PayOsReturnUrl)
+            ? $"{baseFront}/payment/return?orderId={order.Id}"
+            : request.PayOsReturnUrl!;
+        var cancelUrl = string.IsNullOrWhiteSpace(request.PayOsCancelUrl)
+            ? $"{baseFront}/payment/cancel?orderId={order.Id}"
+            : request.PayOsCancelUrl!;
+
+        return new CheckoutBuiltState(order, payment, returnUrl, cancelUrl);
     }
+
+    private sealed record CheckoutBuiltState(Order Order, Payment Payment, string ReturnUrl, string CancelUrl);
 
     private async Task<string> GenerateUniqueOrderNumber(CancellationToken cancellationToken)
     {
@@ -119,8 +227,18 @@ public class CheckoutCartCommandHandler : IRequestHandler<CheckoutCartCommand, C
                 return orderNumber;
         }
 
-        // Fallback (collision is extremely unlikely)
         return $"INX{DateTime.UtcNow:yyyyMMddHHmmss}{Guid.NewGuid():N}";
     }
-}
 
+    private async Task<long> GenerateUniquePayOsOrderCode(CancellationToken cancellationToken)
+    {
+        for (var i = 0; i < 15; i++)
+        {
+            var code = Random.Shared.NextInt64(100_000_000, int.MaxValue);
+            if (!await _paymentRepository.ExistsByPayosOrderCodeAsync(code, cancellationToken))
+                return code;
+        }
+
+        return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+    }
+}
