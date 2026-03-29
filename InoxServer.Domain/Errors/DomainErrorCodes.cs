@@ -58,6 +58,7 @@ namespace InoxServer.Domain.Errors
             public const string AlreadyCancelled = "ORDER_ALREADY_CANCELLED";
             public const string CannotCancel = "ORDER_CANNOT_CANCEL";
             public const string InvalidStatus = "ORDER_INVALID_STATUS";
+            public const string UnauthorizedAccess = "ORDER_UNAUTHORIZED_ACCESS";
         }
 
         public static class Coupon
