@@ -1,3 +1,4 @@
+using InoxServer.Application.DTOs.Common;
 using InoxServer.Application.Features.Orders.DTOs;
 using InoxServer.Domain.Interfaces.Repositories;
 using InoxServer.SharedKernel.Common;
@@ -31,7 +32,7 @@ public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, Paged
         {
             Id = o.Id,
             OrderNumber = o.OrderNumber,
-            Status = o.Status,
+            Status = EnumDto<Domain.Enums.OrderStatus>.From(o.Status),
             TotalAmount = o.TotalAmount,
             CreatedAt = o.CreatedAt,
             ItemCount = o.OrderItems.Count

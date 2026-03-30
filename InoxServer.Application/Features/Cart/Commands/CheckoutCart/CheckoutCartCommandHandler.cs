@@ -1,3 +1,4 @@
+using InoxServer.Application.DTOs.Common;
 using InoxServer.Application.Features.Cart.DTOs;
 using InoxServer.Domain.Configuration;
 using InoxServer.Domain.Entities;
@@ -51,7 +52,7 @@ public class CheckoutCartCommandHandler : IRequestHandler<CheckoutCartCommand, C
                 OrderId = built.Order.Id,
                 OrderNumber = built.Order.OrderNumber,
                 TotalAmount = built.Order.TotalAmount,
-                PaymentMethod = request.PaymentMethod,
+                PaymentMethod = EnumDto<Domain.Enums.PaymentMethod>.From(request.PaymentMethod),
                 PaymentId = built.Payment.Id,
                 PayOsCheckoutUrl = null,
                 PayOsQrCode = null
@@ -89,7 +90,7 @@ public class CheckoutCartCommandHandler : IRequestHandler<CheckoutCartCommand, C
             OrderId = built.Order.Id,
             OrderNumber = built.Order.OrderNumber,
             TotalAmount = built.Order.TotalAmount,
-            PaymentMethod = request.PaymentMethod,
+            PaymentMethod = EnumDto<Domain.Enums.PaymentMethod>.From(request.PaymentMethod),
             PaymentId = built.Payment.Id,
             PayOsCheckoutUrl = link.CheckoutUrl,
             PayOsQrCode = link.QrCode

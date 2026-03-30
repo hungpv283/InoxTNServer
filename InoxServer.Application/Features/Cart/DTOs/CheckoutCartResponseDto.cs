@@ -1,3 +1,4 @@
+using InoxServer.Application.DTOs.Common;
 using InoxServer.Domain.Enums;
 
 namespace InoxServer.Application.Features.Cart.DTOs;
@@ -8,7 +9,7 @@ public class CheckoutCartResponseDto
     public string OrderNumber { get; set; } = default!;
     public decimal TotalAmount { get; set; }
 
-    public PaymentMethod PaymentMethod { get; set; }
+    public EnumDto<PaymentMethod> PaymentMethod { get; set; } = default!;
 
     public Guid? PaymentId { get; set; }
 
@@ -17,4 +18,3 @@ public class CheckoutCartResponseDto
 
     public string? PayOsQrCode { get; set; }
 }
-

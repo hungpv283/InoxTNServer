@@ -1,3 +1,4 @@
+using InoxServer.Application.DTOs.Common;
 using InoxServer.Domain.Enums;
 
 namespace InoxServer.Application.Features.Orders.DTOs;
@@ -13,7 +14,7 @@ public class OrderDetailDto
     public decimal DiscountAmount { get; set; }
     public decimal TotalAmount { get; set; }
 
-    public OrderStatus Status { get; set; }
+    public EnumDto<OrderStatus> Status { get; set; } = default!;
 
     public string ShippingName { get; set; } = default!;
     public string ShippingPhone { get; set; } = default!;
