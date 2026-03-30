@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace InoxServer.Presentation.Extensions
 {
@@ -29,6 +30,18 @@ namespace InoxServer.Presentation.Extensions
                         ValidAudience = jwtSettings["Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(secretKey))
+                    };
+                    //xoa 11 dong dưới
+
+                    // Token sai/hết hạn (vd. Swagger "Authorize" còn Bearer cũ) có thể làm handler ném exception → 500.
+                    // Gán null để không rethrow; endpoint [Authorize] vẫn trả 401 khi chưa đăng nhập hợp lệ.
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            context.Exception = null!; // Ngăn rethrow; property không nullable trong API nhưng null được dùng để suppress.
+                            return Task.CompletedTask;
+                        }
                     };
                 });
 

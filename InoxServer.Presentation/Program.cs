@@ -51,6 +51,11 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+//xoa 2 dòng dưới 
+// Không qua versioning / controller — dùng cho Azure Health Check & curl nhanh (tránh lỗi JWT gửi kèm từ Swagger).
+app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }))
+    .AllowAnonymous();
+
 app.MapControllers();
 
 app.Run();
