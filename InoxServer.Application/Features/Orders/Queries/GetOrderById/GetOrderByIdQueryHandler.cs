@@ -1,3 +1,4 @@
+using InoxServer.Application.DTOs.Common;
 using InoxServer.Application.Features.Orders.DTOs;
 using InoxServer.Domain.Entities;
 using InoxServer.Domain.Errors;
@@ -38,7 +39,7 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order
             ShippingFee = order.ShippingFee,
             DiscountAmount = order.DiscountAmount,
             TotalAmount = order.TotalAmount,
-            Status = order.Status,
+            Status = EnumDto<Domain.Enums.OrderStatus>.From(order.Status),
             ShippingName = order.ShippingName,
             ShippingPhone = order.ShippingPhone,
             ShippingAddress = order.ShippingAddress,
@@ -62,8 +63,8 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order
                 : new OrderPaymentDto
                 {
                     Id = order.Payment.Id,
-                    Method = order.Payment.Method,
-                    Status = order.Payment.Status,
+                    Method = EnumDto<Domain.Enums.PaymentMethod>.From(order.Payment.Method),
+                    Status = EnumDto<Domain.Enums.PaymentStatus>.From(order.Payment.Status),
                     Amount = order.Payment.Amount,
                     PaidAt = order.Payment.PaidAt
                 }

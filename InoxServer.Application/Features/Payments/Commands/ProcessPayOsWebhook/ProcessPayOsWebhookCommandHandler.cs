@@ -68,6 +68,7 @@ public class ProcessPayOsWebhookCommandHandler : IRequestHandler<ProcessPayOsWeb
                     {
                         tracked.Status = PaymentStatus.Paid;
                         tracked.PaidAt = DateTime.UtcNow;
+                        tracked.Order.Status = Domain.Enums.OrderStatus.Confirmed;
                     }
                 }
                 else if (tracked.Status == PaymentStatus.Pending)
