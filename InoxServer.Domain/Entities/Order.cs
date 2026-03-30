@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using InoxServer.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ namespace InoxServer.Domain.Entities
 {
     public class Order : AuditableEntity
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string OrderNumber { get; set; } = default!;
         public decimal Subtotal { get; set; }
         public decimal ShippingFee { get; set; } = 0;

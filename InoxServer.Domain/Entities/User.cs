@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using InoxServer.Domain.Enums;
 using System;
 using System.Collections.Generic;
@@ -19,6 +19,10 @@ namespace InoxServer.Domain.Entities
         public UserRole Role { get; set; } = UserRole.Customer;
         public bool IsActive { get; set; } = true;
         public DateTime? EmailVerifiedAt { get; set; }
+        public string? EmailVerificationToken { get; set; }
+        public DateTime? EmailVerificationTokenExpiresAt { get; set; }
+        public string? PasswordResetToken { get; set; }
+        public DateTime? PasswordResetTokenExpiresAt { get; set; }
 
         public Cart? Cart { get; set; }
 

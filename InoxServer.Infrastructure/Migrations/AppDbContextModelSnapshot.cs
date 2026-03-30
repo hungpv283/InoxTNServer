@@ -24,12 +24,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Banner", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -72,12 +70,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Cart", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -91,8 +87,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -105,12 +101,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.CartItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AddedAt")
                         .ValueGeneratedOnAdd()
@@ -118,12 +112,12 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnName("added_at")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("CartId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("CartId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("cart_id");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
                     b.Property<short>("Quantity")
@@ -148,12 +142,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -182,8 +174,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("name");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("ParentId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("parent_id");
 
                     b.Property<string>("Slug")
@@ -210,12 +202,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Coupon", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -287,23 +277,21 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.CouponUsage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CouponId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("CouponId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("coupon_id");
 
                     b.Property<decimal>("DiscountApplied")
                         .HasColumnType("decimal(10,2)")
                         .HasColumnName("discount_applied");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("order_id");
 
                     b.Property<DateTime>("UsedAt")
@@ -312,8 +300,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnName("used_at")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -330,15 +318,13 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.InventoryLog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("AdminId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("admin_id");
 
                     b.Property<DateTime>("CreatedAt")
@@ -351,8 +337,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("note");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
                     b.Property<int>("QuantityChange")
@@ -402,12 +388,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Order", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CancelledReason")
                         .HasColumnType("nvarchar(max)")
@@ -486,8 +470,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnName("updated_at")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -506,19 +490,17 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.OrderItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("order_id");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
                     b.Property<string>("ProductName")
@@ -556,15 +538,13 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.OrderStatusLog", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AdminId")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("AdminId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("admin_id");
 
                     b.Property<DateTime>("ChangedAt")
@@ -577,8 +557,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("note");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("order_id");
 
                     b.Property<string>("StatusFrom")
@@ -606,12 +586,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Payment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(12,2)")
@@ -629,8 +607,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("method");
 
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("order_id");
 
                     b.Property<DateTime?>("PaidAt")
@@ -693,12 +671,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("AvgRating")
                         .ValueGeneratedOnAdd()
@@ -706,8 +682,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasDefaultValue(0m)
                         .HasColumnName("avg_rating");
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("category_id");
 
                     b.Property<DateTime>("CreatedAt")
@@ -816,12 +792,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.ProductImage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AltText")
                         .HasMaxLength(200)
@@ -840,8 +814,8 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("is_primary");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
                     b.Property<byte>("SortOrder")
@@ -859,12 +833,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Review", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)")
@@ -882,20 +854,20 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasDefaultValue(false)
                         .HasColumnName("is_approved");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int")
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("order_id");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
                     b.Property<byte>("Rating")
                         .HasColumnType("tinyint")
                         .HasColumnName("rating");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");
@@ -914,11 +886,9 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
@@ -936,6 +906,12 @@ namespace InoxServer.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("EmailVerificationToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EmailVerificationTokenExpiresAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EmailVerifiedAt")
                         .HasColumnType("datetime2")
@@ -955,6 +931,12 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)")
                         .HasColumnName("password_hash");
+
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("PasswordResetTokenExpiresAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(20)
@@ -982,12 +964,10 @@ namespace InoxServer.Infrastructure.Migrations
 
             modelBuilder.Entity("InoxServer.Domain.Entities.Wishlist", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AddedAt")
                         .ValueGeneratedOnAdd()
@@ -995,12 +975,12 @@ namespace InoxServer.Infrastructure.Migrations
                         .HasColumnName("added_at")
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("product_id");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");

@@ -1,9 +1,30 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Features\Products\Queries\GetCategories\**" />
+    <Compile Remove="Features\Products\Queries\GetCategoryById\**" />
+    <EmbeddedResource Remove="Features\Products\Queries\GetCategories\**" />
+    <EmbeddedResource Remove="Features\Products\Queries\GetCategoryById\**" />
+    <None Remove="Features\Products\Queries\GetCategories\**" />
+    <None Remove="Features\Products\Queries\GetCategoryById\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.25" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\InoxServer.Domain\InoxServer.Domain.csproj" />
+    <ProjectReference Include="..\InoxServer.SharedKernel\InoxServer.SharedKernel.csproj" />
+  </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using InoxServer.Domain.Common;
+using InoxServer.Domain.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace InoxServer.Domain.Entities
 {
     public class ProductImage : BaseEntity
     {
-        public int ProductId { get; set; }
+        public Guid ProductId { get; set; }
         public string ImageUrl { get; set; } = default!;
         public string? AltText { get; set; }
         public bool IsPrimary { get; set; } = false;
