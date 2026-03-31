@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +14,7 @@ namespace InoxServer.Domain.Enums
         Processing = 3,
         Shipping = 4,
         Delivered = 5,
+        Completed = 8,
         Cancelled = 6,
         Refunded = 7
     }
