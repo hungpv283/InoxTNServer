@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InoxServer.Infrastructure.Repositories
@@ -40,6 +39,25 @@ namespace InoxServer.Infrastructure.Repositories
         public async Task<bool> ExistsByCodeAsync(string code, CancellationToken cancellationToken = default)
         {
             return await _context.Coupons.AnyAsync(x => x.Code == code, cancellationToken);
+        }
+
+        public async Task<List<Coupon>> GetAvailableCouponsAsync(CancellationToken cancellationToken = default)
+        {
+            var now = DateTime.UtcNow;
+            return await _context.Coupons
+                .AsNoTracking()
+                .Where(c => c.IsActive)
+                .Where(c => c.StartsAt == null || c.StartsAt <= now)
+                .Where(c => c.ExpiresAt == null || c.ExpiresAt >= now)
+                .Where(c => c.UsageLimit == null || c.UsedCount < c.UsageLimit)
+                .OrderByDescending(x => x.CreatedAt)
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<bool> HasUserUsedCouponAsync(Guid userId, Guid couponId, CancellationToken cancellationToken = default)
+        {
+            return await _context.CouponUsages
+                .AnyAsync(x => x.UserId == userId && x.CouponId == couponId, cancellationToken);
         }
 
         public async Task AddAsync(Coupon coupon, CancellationToken cancellationToken = default)
