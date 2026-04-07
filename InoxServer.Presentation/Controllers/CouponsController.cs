@@ -1,6 +1,10 @@
 using InoxServer.Application.Features.Coupons.Commands.ApplyCoupon;
+using InoxServer.Application.Features.Coupons.Commands.CreateCoupon;
+using InoxServer.Application.Features.Coupons.Commands.DeleteCoupon;
+using InoxServer.Application.Features.Coupons.Commands.UpdateCoupon;
 using InoxServer.Application.Features.Coupons.Commands.ValidateCoupon;
 using InoxServer.Application.Features.Coupons.Queries.GetAvailableCoupons;
+using InoxServer.Application.Features.Coupons.Queries.GetAllCoupons;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +31,51 @@ public class CouponsController : ControllerBase
     {
         var result = await _mediator.Send(new GetAvailableCouponsQuery());
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Lấy tất cả coupon (Admin)
+    /// </summary>
+    [HttpGet("all")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> GetAllCoupons()
+    {
+        var result = await _mediator.Send(new GetAllCouponsQuery());
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Tạo coupon mới (Admin)
+    /// </summary>
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> CreateCoupon([FromBody] CreateCouponCommand command)
+    {
+        var id = await _mediator.Send(command);
+        return Created($"/api/v1/coupons/{id}", new { Id = id, Message = "Tạo coupon thành công." });
+    }
+
+    /// <summary>
+    /// Cập nhật coupon (Admin)
+    /// </summary>
+    [HttpPut("{id:guid}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> UpdateCoupon(Guid id, [FromBody] UpdateCouponCommand command)
+    {
+        command.Id = id;
+        var result = await _mediator.Send(command);
+        return Ok(new { Success = result, Message = "Cập nhật coupon thành công." });
+    }
+
+    /// <summary>
+    /// Xóa coupon (Admin)
+    /// </summary>
+    [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> DeleteCoupon(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteCouponCommand { Id = id });
+        return Ok(new { Success = result, Message = "Xóa coupon thành công." });
     }
 
     /// <summary>

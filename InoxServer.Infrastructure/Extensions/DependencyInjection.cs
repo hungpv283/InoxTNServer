@@ -52,6 +52,7 @@ namespace InoxServer.Infrastructure.Extensions
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IWishlistRepository, WishlistRepository>();
             services.AddScoped<ICouponRepository, CouponRepository>();
+            services.AddScoped<ICouponUsageRepository, CouponUsageRepository>();
             services.AddScoped<IBannerRepository, BannerRepository>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenService, JwtTokenService>();
