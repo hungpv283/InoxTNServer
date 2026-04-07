@@ -60,11 +60,6 @@ namespace InoxServer.Infrastructure.Repositories
                 .AnyAsync(x => x.UserId == userId && x.CouponId == couponId, cancellationToken);
         }
 
-        public async Task AddCouponUsageAsync(CouponUsage couponUsage, CancellationToken cancellationToken = default)
-        {
-            await _context.CouponUsages.AddAsync(couponUsage, cancellationToken);
-        }
-
         public async Task AddAsync(Coupon coupon, CancellationToken cancellationToken = default)
         {
             await _context.Coupons.AddAsync(coupon, cancellationToken);

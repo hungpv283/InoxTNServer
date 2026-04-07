@@ -1,6 +1,7 @@
 using InoxServer.Application.Features.Coupons.Commands.ValidateCoupon;
 using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
+using InoxServer.Domain.Interfaces.Services;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -10,14 +11,20 @@ namespace InoxServer.Application.Features.Coupons.Commands.ApplyCoupon;
 public class ApplyCouponCommandHandler : IRequestHandler<ApplyCouponCommand, decimal>
 {
     private readonly ICouponRepository _couponRepository;
+    private readonly ICouponUsageRepository _couponUsageRepository;
     private readonly IMediator _mediator;
+    private readonly IUnitOfWork _unitOfWork;
 
     public ApplyCouponCommandHandler(
         ICouponRepository couponRepository,
-        IMediator mediator)
+        ICouponUsageRepository couponUsageRepository,
+        IMediator mediator,
+        IUnitOfWork unitOfWork)
     {
         _couponRepository = couponRepository;
+        _couponUsageRepository = couponUsageRepository;
         _mediator = mediator;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<decimal> Handle(ApplyCouponCommand request, CancellationToken cancellationToken)
@@ -52,7 +59,8 @@ public class ApplyCouponCommandHandler : IRequestHandler<ApplyCouponCommand, dec
             UsedAt = DateTime.UtcNow
         };
 
-        await _couponRepository.AddCouponUsageAsync(couponUsage, cancellationToken);
+        await _couponUsageRepository.AddAsync(couponUsage, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return validationResult.DiscountAmount;
     }

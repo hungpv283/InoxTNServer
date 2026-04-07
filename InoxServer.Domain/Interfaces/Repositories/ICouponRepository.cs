@@ -20,8 +20,6 @@ namespace InoxServer.Domain.Interfaces.Repositories
 
         Task<bool> HasUserUsedCouponAsync(Guid userId, Guid couponId, CancellationToken cancellationToken = default);
 
-        Task AddCouponUsageAsync(CouponUsage couponUsage, CancellationToken cancellationToken = default);
-
         Task AddAsync(Coupon coupon, CancellationToken cancellationToken = default);
 
         void Update(Coupon coupon);
