@@ -1,7 +1,6 @@
 using InoxServer.Application.Features.Coupons.Commands.ValidateCoupon;
 using InoxServer.Domain.Entities;
 using InoxServer.Domain.Interfaces.Repositories;
-using InoxServer.Infrastructure.Contexts;
 using MediatR;
 using System;
 using System.Threading.Tasks;
@@ -12,16 +11,13 @@ public class ApplyCouponCommandHandler : IRequestHandler<ApplyCouponCommand, dec
 {
     private readonly ICouponRepository _couponRepository;
     private readonly IMediator _mediator;
-    private readonly AppDbContext _context;
 
     public ApplyCouponCommandHandler(
         ICouponRepository couponRepository,
-        IMediator mediator,
-        AppDbContext context)
+        IMediator mediator)
     {
         _couponRepository = couponRepository;
         _mediator = mediator;
-        _context = context;
     }
 
     public async Task<decimal> Handle(ApplyCouponCommand request, CancellationToken cancellationToken)
@@ -56,8 +52,7 @@ public class ApplyCouponCommandHandler : IRequestHandler<ApplyCouponCommand, dec
             UsedAt = DateTime.UtcNow
         };
 
-        await _context.CouponUsages.AddAsync(couponUsage, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _couponRepository.AddCouponUsageAsync(couponUsage, cancellationToken);
 
         return validationResult.DiscountAmount;
     }
