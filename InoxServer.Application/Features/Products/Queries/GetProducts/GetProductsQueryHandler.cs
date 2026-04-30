@@ -47,7 +47,15 @@ namespace InoxServer.Application.Features.Products.Queries.GetProducts
                 Material = x.Material,
                 Dimensions = x.Dimensions,
                 IsActive = x.IsActive,
-                IsFeatured = x.IsFeatured
+                IsFeatured = x.IsFeatured,
+                Images = x.ProductImages.Select(i => new ProductImageDto
+                {
+                    Id = i.Id,
+                    ImageUrl = i.ImageUrl,
+                    AltText = i.AltText,
+                    IsPrimary = i.IsPrimary,
+                    SortOrder = i.SortOrder
+                }).ToList()
             }).ToList();
 
             return new PagedResult<ProductDto>

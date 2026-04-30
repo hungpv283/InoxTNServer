@@ -20,5 +20,15 @@ namespace InoxServer.Application.Features.Products.DTOs
         public string? Dimensions { get; set; }
         public bool IsActive { get; set; }
         public bool IsFeatured { get; set; }
+        public List<ProductImageDto> Images { get; set; } = new();
+    }
+
+    public class ProductImageDto
+    {
+        public Guid Id { get; set; }
+        public string ImageUrl { get; set; } = default!;
+        public string? AltText { get; set; }
+        public bool IsPrimary { get; set; }
+        public byte SortOrder { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using InoxServer.Application.Features.Auth.Commands.UpdateProfile;
 using InoxServer.Application.Features.Auth.Commands.UploadAvatar;
 using InoxServer.Application.Features.Auth.Queries.GetProfile;
 using InoxServer.Domain.Errors;
@@ -25,6 +26,14 @@ public class UserController : ControllerBase
     {
         var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var result = await _mediator.Send(new GetProfileQuery { UserId = userId });
+        return Ok(result);
+    }
+
+    [HttpPut("me")]
+    public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileCommand command)
+    {
+        command.UserId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var result = await _mediator.Send(command);
         return Ok(result);
     }
 
