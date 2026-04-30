@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace InoxServer.Presentation.Extensions
 {
@@ -31,7 +30,6 @@ namespace InoxServer.Presentation.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(
                             Encoding.UTF8.GetBytes(secretKey))
                     };
-                   
                 });
 
             services.AddAuthorization();

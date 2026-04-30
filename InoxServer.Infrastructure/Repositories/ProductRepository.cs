@@ -32,6 +32,7 @@ namespace InoxServer.Infrastructure.Repositories
         {
             return await _context.Products
                 .Include(x => x.Category)
+                .Include(x => x.ProductImages.OrderBy(i => i.SortOrder))
                 .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
@@ -39,6 +40,7 @@ namespace InoxServer.Infrastructure.Repositories
         {
             return await _context.Products
                 .Include(x => x.Category)
+                .Include(x => x.ProductImages.OrderBy(i => i.SortOrder))
                 .FirstOrDefaultAsync(x => x.Slug == slug, cancellationToken);
         }
 
@@ -79,6 +81,7 @@ namespace InoxServer.Infrastructure.Repositories
             var query = _context.Products
                 .AsNoTracking()
                 .Include(x => x.Category)
+                .Include(x => x.ProductImages.OrderBy(i => i.SortOrder))
                 .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(keyword))

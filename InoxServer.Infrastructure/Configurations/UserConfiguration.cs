@@ -40,7 +40,7 @@ namespace InoxServer.Infrastructure.Configurations
                 .HasMaxLength(20);
 
             builder.Property(x => x.Address)
-                .HasColumnType("text");
+                .HasColumnType("nvarchar(max)");
 
             builder.Property(x => x.AvatarUrl)
                 .HasColumnName("avatar_url")

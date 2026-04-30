@@ -37,6 +37,12 @@ namespace InoxServer.Presentation.Controllers
             return Ok(result);
         }
 
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            return NoContent();
+        }
+
         [HttpGet("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromQuery] string token)
         {

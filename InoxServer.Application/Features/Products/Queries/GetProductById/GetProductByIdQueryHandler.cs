@@ -34,7 +34,15 @@ namespace InoxServer.Application.Features.Products.Queries.GetProductById
                 Material = product.Material,
                 Dimensions = product.Dimensions,
                 IsActive = product.IsActive,
-                IsFeatured = product.IsFeatured
+                IsFeatured = product.IsFeatured,
+                Images = product.ProductImages.Select(i => new ProductImageDto
+                {
+                    Id = i.Id,
+                    ImageUrl = i.ImageUrl,
+                    AltText = i.AltText,
+                    IsPrimary = i.IsPrimary,
+                    SortOrder = i.SortOrder
+                }).ToList()
             };
         }
     }

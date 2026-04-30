@@ -1,4 +1,5 @@
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using InoxServer.Application.Features.Categories.Commands.CreateCategory;
 using InoxServer.Application.Features.Categories.Commands.DeleteCategory;
 using InoxServer.Application.Features.Categories.Commands.UpdateCategory;
@@ -35,6 +36,7 @@ public class CategoriesController : ControllerBase
         return result == null ? NotFound() : Ok(result);
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCategoryCommand command)
     {
@@ -42,6 +44,7 @@ public class CategoriesController : ControllerBase
         return Ok(new { Id = id });
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] UpdateCategoryCommand command)
     {
@@ -49,6 +52,7 @@ public class CategoriesController : ControllerBase
         return result ? Ok() : NotFound();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
